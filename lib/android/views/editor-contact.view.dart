@@ -1,4 +1,4 @@
-import 'package:contacts/models/contact.model.dart';
+import 'package:contacts/core/models/contact.model.dart';
 import 'package:flutter/material.dart';
 
 class EditorContactView extends StatelessWidget {

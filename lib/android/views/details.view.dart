@@ -1,6 +1,6 @@
 import 'package:contacts/android/views/address.view.dart';
 import 'package:contacts/android/views/editor-contact.view.dart';
-import 'package:contacts/models/contact.model.dart';
+import 'package:contacts/core/models/contact.model.dart';
 import 'package:flutter/material.dart';
 
 class DetailsView extends StatelessWidget {
@@ -157,7 +157,7 @@ class DetailsView extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => EditorContactView(
                 model: ContactModel(
-                  id: "1",
+                  id: 1,
                   name: "André Baltieri",
                   email: "andre@balta.io",
                   phone: "11 97214-2255",
