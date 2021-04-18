@@ -1,11 +1,12 @@
-import 'package:contacts/core/models/contact.model.dart';
-import 'package:contacts/core/repositories/contact_repository.dart';
-import 'package:contacts/core/services/sqflite_service.dart';
-import 'package:contacts/core/settings/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
+import 'package:contacts/core/models/contact.model.dart';
+import 'package:contacts/core/repositories/contact_repository.dart';
+import 'package:contacts/core/services/sqflite_service.dart';
+import 'package:contacts/core/settings/database.dart';
 
 main() {
   sqfliteFfiInit();
@@ -28,8 +29,8 @@ main() {
 
       db.delete(TABLE_NAME);
 
-      final service = SqfliteService(TABLE_NAME, db);
-      repository = ContactRepositoryImpl(service);
+      final service = SQFLiteService(TABLE_NAME, db);
+      repository = ContactRepository(service);
     });
 
     tearDownAll(() async {

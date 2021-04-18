@@ -1,7 +1,7 @@
 import 'package:contacts/core/interfaces/database/database_service.dart';
 import 'package:contacts/core/models/contact.model.dart';
 
-abstract class ContactRepository {
+abstract class IContactRepository {
   Future createContact(ContactModel model);
   Future<List<ContactModel>?> getContacts();
   Future<List<ContactModel>?> searchByName(String term);
@@ -17,9 +17,9 @@ abstract class ContactRepository {
   );
 }
 
-class ContactRepositoryImpl implements ContactRepository {
+class ContactRepository implements IContactRepository {
   DatabaseService service;
-  ContactRepositoryImpl(this.service);
+  ContactRepository(this.service);
 
   @override
   Future createContact(ContactModel model) async {

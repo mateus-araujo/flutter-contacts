@@ -1,12 +1,13 @@
-import 'package:contacts/core/errors/errors.dart';
-import 'package:contacts/core/interfaces/database/database_service.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SqfliteService implements DatabaseService {
+import 'package:contacts/core/errors/errors.dart';
+import 'package:contacts/core/interfaces/database/database_service.dart';
+
+class SQFLiteService implements DatabaseService {
   final Database db;
   final String tableName;
 
-  SqfliteService(this.tableName, this.db);
+  SQFLiteService(this.tableName, this.db);
 
   @override
   Future insert(item) async {

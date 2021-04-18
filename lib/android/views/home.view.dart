@@ -1,6 +1,8 @@
-import 'package:contacts/android/views/details.view.dart';
-import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:flutter/material.dart';
+
+import 'package:contacts/android/views/contact_form.view.dart';
+import 'package:contacts/android/views/details.view.dart';
+import 'package:contacts/core/models/contact.model.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -57,7 +59,9 @@ class HomeView extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ContactFormView(),
+              builder: (context) => ContactFormView(
+                model: ContactModel(id: 0),
+              ),
             ),
           );
         },
