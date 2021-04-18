@@ -1,21 +1,43 @@
-import 'package:contacts/android/views/address.view.dart';
-import 'package:contacts/android/views/contact_form.view.dart';
-import 'package:contacts/core/models/contact.model.dart';
 import 'package:flutter/material.dart';
 
-class DetailsView extends StatelessWidget {
+import 'package:contacts/android/views/address.view.dart';
+import 'package:contacts/android/views/contact_form.view.dart';
+import 'package:contacts/android/views/loading.view.dart';
+import 'package:contacts/core/models/contact.model.dart';
+import 'package:contacts/core/repositories/contact_repository.dart';
+
+class DetailsView extends StatefulWidget {
+  final int id;
+
+  const DetailsView({Key? key, required this.id}) : super(key: key);
+
+  @override
+  _DetailsViewState createState() => _DetailsViewState();
+}
+
+class _DetailsViewState extends State<DetailsView> {
+  Future<ContactModel?> getContact() async {
+    final repository = await ContactRepository.repository;
+
+    final contact = await repository.getContactById(widget.id);
+
+    return contact;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final model = ContactModel(
-      id: 1,
-      name: "André Baltieri",
-      email: "andre@balta.io",
-      phone: "11 97214-2255",
-      image:
-          "https://media-exp1.licdn.com/dms/image/C4D03AQHT446c1pOc_Q/profile-displayphoto-shrink_800_800/0/1589576908763?e=1623888000&v=beta&t=AP2WY5dN0rVAQ3bsBLhjOnrUh7xlHAE24yRZ3V5Gvdc",
-    );
+    return FutureBuilder(
+      future: getContact(),
+      builder: (context, snapshot) {
+        if (snapshot.data is ContactModel) {
+          final contact = snapshot.data as ContactModel;
 
-    return _buildPage(context, model);
+          return _buildPage(context, contact);
+        } else {
+          return LoadingView();
+        }
+      },
+    );
   }
 
   Widget _buildPage(BuildContext context, ContactModel model) {
@@ -44,11 +66,12 @@ class DetailsView extends StatelessWidget {
               width: 100,
               height: 100,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  image: NetworkImage(model.image!),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(100),
+                  image: DecorationImage(
+                    image: model.image == null
+                        ? AssetImage("assets/images/profile-picture.png")
+                        : AssetImage(model.image!),
+                  )),
             ),
           ),
           SizedBox(

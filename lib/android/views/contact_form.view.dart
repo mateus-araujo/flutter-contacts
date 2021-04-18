@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'package:contacts/android/views/home.view.dart';
-import 'package:contacts/core/databases/sqflite_connection.dart';
+
 import 'package:contacts/core/models/contact.model.dart';
 import 'package:contacts/core/repositories/contact_repository.dart';
-import 'package:contacts/core/services/sqflite_service.dart';
-import 'package:contacts/core/settings/database.dart';
 
 class ContactFormView extends StatefulWidget {
   final ContactModel? model;
@@ -24,8 +21,6 @@ class _ContactFormViewState extends State<ContactFormView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
 
-  late final Database db;
-  late final SQFLiteService _service;
   late final ContactRepository _repository;
 
   final validatorName = ValidationBuilder().minLength(3).build();
@@ -49,6 +44,9 @@ class _ContactFormViewState extends State<ContactFormView> {
   }
 
   createContact(ContactModel model) {
+    widget.model!.id = null;
+    widget.model!.image = null;
+
     _repository
         .createContact(model)
         .then((_) => onSuccess())
@@ -80,12 +78,10 @@ class _ContactFormViewState extends State<ContactFormView> {
   }
 
   void initContactRepository() async {
-    final database = await SQFLiteConnection.create();
-    _service = SQFLiteService(TABLE_NAME, database.connection);
-    _repository = ContactRepository(_service);
+    _repository = await ContactRepository.repository;
 
     final contacts = await _repository.getContacts();
-    print('contacts!.length: ${contacts!.length}');
+    print('contacts.length: ${contacts!.length}');
   }
 
   @override

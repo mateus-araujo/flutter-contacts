@@ -1,5 +1,8 @@
+import 'package:contacts/core/databases/sqflite_connection.dart';
 import 'package:contacts/core/interfaces/database/database_service.dart';
 import 'package:contacts/core/models/contact.model.dart';
+import 'package:contacts/core/services/sqflite_service.dart';
+import 'package:contacts/core/settings/database.dart';
 
 abstract class IContactRepository {
   Future createContact(ContactModel model);
@@ -20,6 +23,14 @@ abstract class IContactRepository {
 class ContactRepository implements IContactRepository {
   DatabaseService service;
   ContactRepository(this.service);
+
+  static Future<ContactRepository> get repository async {
+    final database = await SQFLiteConnection.create();
+    final service = SQFLiteService(TABLE_NAME, database.connection);
+    final repository = ContactRepository(service);
+
+    return repository;
+  }
 
   @override
   Future createContact(ContactModel model) async {

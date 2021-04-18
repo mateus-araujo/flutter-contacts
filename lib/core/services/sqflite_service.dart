@@ -34,7 +34,7 @@ class SQFLiteService implements DatabaseService {
       tableName,
       where: "$field LIKE ?",
       whereArgs: [
-        '%$term',
+        '%$term%',
       ],
     );
 
