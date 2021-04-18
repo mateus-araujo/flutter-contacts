@@ -35,6 +35,7 @@ class _HomeViewState extends State<HomeView> {
           itemCount: controller.contacts.length,
           itemBuilder: (context, index) => ContactListItem(
             model: controller.contacts[index],
+            controller: controller,
           ),
         ),
       ),

@@ -11,8 +11,6 @@ class SearchAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
       title: Observer(
         builder: (_) {
           return controller.showSearch
@@ -26,7 +24,6 @@ class SearchAppBar extends StatelessWidget {
               : Text('Meus Contatos');
         },
       ),
-      centerTitle: true,
       leading: TextButton(
         onPressed: () {
           if (controller.showSearch) controller.search("");

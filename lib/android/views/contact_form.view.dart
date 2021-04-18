@@ -98,9 +98,6 @@ class _ContactFormViewState extends State<ContactFormView> {
         title: widget.model!.id == 0
             ? Text("Novo Contato")
             : Text("Editar Contato"),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20),

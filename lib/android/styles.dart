@@ -9,6 +9,11 @@ const accentColor = baseAccentColor;
 ThemeData androidTheme() {
   return ThemeData(
     brightness: brightness,
+    appBarTheme: AppBarTheme(
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         primary: primaryColor,

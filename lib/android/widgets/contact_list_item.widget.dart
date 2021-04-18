@@ -1,28 +1,32 @@
+import 'dart:io';
+
+import 'package:contacts/core/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:contacts/android/views/details.view.dart';
 import 'package:contacts/core/models/contact.model.dart';
 
 class ContactListItem extends StatelessWidget {
+  final HomeController controller;
   final ContactModel model;
 
-  const ContactListItem({Key? key, required this.model}) : super(key: key);
+  const ContactListItem({
+    Key? key,
+    required this.model,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: model.image == null
-                ? AssetImage("assets/images/profile-picture.png")
-                : AssetImage(model.image!),
-          ),
-        ),
-      ),
+      leading: model.image == null
+          ? CircleAvatar(
+              backgroundImage: AssetImage('assets/images/profile-picture.png'))
+          : CircleAvatar(
+              backgroundImage: FileImage(
+                File(model.image!),
+              ),
+            ),
       title: Text(model.name!),
       subtitle: Text(model.phone!),
       trailing: TextButton(
@@ -33,6 +37,7 @@ class ContactListItem extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => DetailsView(
                   id: model.id ?? 0,
+                  controller: controller,
                 ),
               ),
             );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:contacts/shared/styles.dart';
@@ -25,12 +27,17 @@ class ContactDetailsImage extends StatelessWidget {
         height: 100,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: image == ''
-                ? AssetImage("assets/images/profile-picture.png")
-                : AssetImage(image),
-          ),
+          image: image == ''
+              ? DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage("assets/images/profile-picture.png"),
+                )
+              : DecorationImage(
+                  fit: BoxFit.cover,
+                  image: FileImage(
+                    File(image),
+                  ),
+                ),
         ),
       ),
     );
