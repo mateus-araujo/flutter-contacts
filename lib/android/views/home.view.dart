@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:contacts/android/widgets/contact_list_item.widget.dart';
@@ -13,29 +14,26 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final controller = HomeController();
+  final _controller = GetIt.instance.get<HomeController>();
 
   @override
   void initState() {
     super.initState();
-    controller.search("");
+    _controller.search("");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: SearchAppBar(
-          controller: controller,
-        ),
+        child: SearchAppBar(),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
       body: Observer(
         builder: (_) => ListView.builder(
-          itemCount: controller.contacts.length,
+          itemCount: _controller.contacts.length,
           itemBuilder: (context, index) => ContactListItem(
-            model: controller.contacts[index],
-            controller: controller,
+            model: _controller.contacts[index],
           ),
         ),
       ),

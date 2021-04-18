@@ -1,35 +1,21 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_crop/image_crop.dart';
 
 class TakePictureView extends StatefulWidget {
-  final CameraDescription camera;
-
-  const TakePictureView({Key? key, required this.camera}) : super(key: key);
-
   @override
   _TakePictureViewState createState() => _TakePictureViewState();
 }
 
 class _TakePictureViewState extends State<TakePictureView> {
-  late CameraController _controller;
+  final _controller = GetIt.instance.get<CameraController>();
 
   @override
   void initState() {
     super.initState();
 
-    _controller = CameraController(
-      widget.camera,
-      ResolutionPreset.high,
-    );
-
     ImageCrop.requestPermissions();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   Future<String> takePhoto() async {

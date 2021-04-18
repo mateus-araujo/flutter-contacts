@@ -1,23 +1,22 @@
-import 'package:contacts/core/controllers/home_controller.dart';
-import 'package:contacts/core/repositories/contact_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:contacts/android/views/address.view.dart';
 import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:contacts/android/views/loading.view.dart';
 import 'package:contacts/android/widgets/contact_details_actions_row.widget.dart';
+import 'package:contacts/core/controllers/home_controller.dart';
 import 'package:contacts/core/models/contact.model.dart';
+import 'package:contacts/core/repositories/contact_repository.dart';
 import 'package:contacts/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/shared/widgets/contact_details_image.widget.dart';
 
 class DetailsView extends StatefulWidget {
   final int id;
-  final HomeController controller;
 
   const DetailsView({
     Key? key,
     required this.id,
-    required this.controller,
   }) : super(key: key);
 
   @override
@@ -25,6 +24,9 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
+  final _repository = GetIt.instance.get<ContactRepository>();
+  final _controller = GetIt.instance.get<HomeController>();
+
   final circleBorderShape = ElevatedButton.styleFrom(
     shape: CircleBorder(
       side: BorderSide.none,
@@ -32,9 +34,7 @@ class _DetailsViewState extends State<DetailsView> {
   );
 
   Future<ContactModel?> getContact() async {
-    final repository = await ContactRepository.repository;
-
-    final contact = await repository.getContactById(widget.id);
+    final contact = await _repository.getContactById(widget.id);
 
     return contact;
   }
@@ -58,7 +58,7 @@ class _DetailsViewState extends State<DetailsView> {
   Widget _buildPage(BuildContext context, ContactModel model) {
     return WillPopScope(
       onWillPop: () async {
-        widget.controller.search("");
+        _controller.search("");
         return true;
       },
       child: Scaffold(

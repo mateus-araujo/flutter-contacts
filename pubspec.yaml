@@ -26,6 +26,7 @@ dependencies:
   image_crop: ^0.4.0
   uuid: ^3.0.4
   path_provider: ^2.0.1
+  get_it: ^6.1.1
 
 dev_dependencies:
   flutter_test:

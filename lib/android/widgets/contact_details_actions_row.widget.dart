@@ -1,11 +1,11 @@
-import 'package:camera/camera.dart';
-import 'package:contacts/android/views/crop_picture.view.dart';
-import 'package:contacts/android/views/take_picture.view.dart';
-import 'package:contacts/core/repositories/contact_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:contacts/android/views/crop_picture.view.dart';
+import 'package:contacts/android/views/take_picture.view.dart';
 import 'package:contacts/core/models/contact.model.dart';
+import 'package:contacts/core/repositories/contact_repository.dart';
 
 class ContactDetailsActionsRow extends StatefulWidget {
   final ContactModel contact;
@@ -23,16 +23,13 @@ class ContactDetailsActionsRow extends StatefulWidget {
 }
 
 class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
-  takePicture() async {
-    final cameras = await availableCameras();
-    final firstCamera = cameras.first;
+  final _repository = GetIt.instance.get<ContactRepository>();
 
+  takePicture() async {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TakePictureView(
-          camera: firstCamera,
-        ),
+        builder: (context) => TakePictureView(),
       ),
     ).then((path) {
       if (path != null) cropPicture(path);
@@ -51,9 +48,7 @@ class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
   }
 
   updateImage(path) async {
-    final repository = await ContactRepository.repository;
-
-    repository.updateImage(widget.contact.id!, path).then((_) {
+    _repository.updateImage(widget.contact.id!, path).then((_) {
       widget.onUpdate();
     });
   }

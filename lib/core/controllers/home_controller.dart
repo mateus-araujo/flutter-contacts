@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:contacts/core/models/contact.model.dart';
@@ -21,7 +22,8 @@ abstract class _HomeController with Store {
 
   @action
   search(String name) async {
-    final repository = await ContactRepository.repository;
+    final repository = GetIt.instance.get<ContactRepository>();
+
     final data = await repository.searchByName(name);
 
     if (contacts.isNotEmpty) {

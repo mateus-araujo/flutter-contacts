@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:contacts/android/views/home.view.dart';
-
 import 'package:contacts/core/models/contact.model.dart';
 import 'package:contacts/core/repositories/contact_repository.dart';
 
@@ -21,7 +21,7 @@ class _ContactFormViewState extends State<ContactFormView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
 
-  late final ContactRepository _repository;
+  final _repository = GetIt.instance.get<ContactRepository>();
 
   final validatorName = ValidationBuilder().minLength(3).build();
   final validatorPhone =
@@ -75,19 +75,6 @@ class _ContactFormViewState extends State<ContactFormView> {
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  void initContactRepository() async {
-    _repository = await ContactRepository.repository;
-
-    final contacts = await _repository.getContacts();
-    print('contacts.length: ${contacts!.length}');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initContactRepository();
   }
 
   @override

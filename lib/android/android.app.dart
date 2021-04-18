@@ -1,6 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
 import 'package:contacts/android/styles.dart';
 import 'package:contacts/android/views/home.view.dart';
-import 'package:flutter/material.dart';
+import 'package:contacts/android/views/loading.view.dart';
 
 class AndroidApp extends StatelessWidget {
   @override
@@ -9,7 +12,16 @@ class AndroidApp extends StatelessWidget {
       title: 'Contacts',
       debugShowCheckedModeBanner: false,
       theme: androidTheme(),
-      home: HomeView(),
+      home: FutureBuilder(
+        future: GetIt.instance.allReady(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return HomeView();
+          } else {
+            return LoadingView();
+          }
+        },
+      ),
     );
   }
 }
