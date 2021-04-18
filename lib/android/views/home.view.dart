@@ -1,5 +1,5 @@
 import 'package:contacts/android/views/details.view.dart';
-import 'package:contacts/android/views/editor-contact.view.dart';
+import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatelessWidget {
@@ -57,7 +57,7 @@ class HomeView extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EditorContactView(),
+              builder: (context) => ContactFormView(),
             ),
           );
         },

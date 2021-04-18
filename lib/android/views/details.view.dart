@@ -1,11 +1,24 @@
 import 'package:contacts/android/views/address.view.dart';
-import 'package:contacts/android/views/editor-contact.view.dart';
+import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:contacts/core/models/contact.model.dart';
 import 'package:flutter/material.dart';
 
 class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final model = ContactModel(
+      id: 1,
+      name: "André Baltieri",
+      email: "andre@balta.io",
+      phone: "11 97214-2255",
+      image:
+          "https://media-exp1.licdn.com/dms/image/C4D03AQHT446c1pOc_Q/profile-displayphoto-shrink_800_800/0/1589576908763?e=1623888000&v=beta&t=AP2WY5dN0rVAQ3bsBLhjOnrUh7xlHAE24yRZ3V5Gvdc",
+    );
+
+    return _buildPage(context, model);
+  }
+
+  Widget _buildPage(BuildContext context, ContactModel model) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Contato"),
@@ -33,8 +46,7 @@ class DetailsView extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(100),
                 image: DecorationImage(
-                  image: NetworkImage(
-                      "https://media-exp1.licdn.com/dms/image/C4D03AQHT446c1pOc_Q/profile-displayphoto-shrink_800_800/0/1589576908763?e=1623888000&v=beta&t=AP2WY5dN0rVAQ3bsBLhjOnrUh7xlHAE24yRZ3V5Gvdc"),
+                  image: NetworkImage(model.image!),
                 ),
               ),
             ),
@@ -43,7 +55,7 @@ class DetailsView extends StatelessWidget {
             height: 10,
           ),
           Text(
-            "André Baltieri",
+            model.name!,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -155,13 +167,8 @@ class DetailsView extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EditorContactView(
-                model: ContactModel(
-                  id: 1,
-                  name: "André Baltieri",
-                  email: "andre@balta.io",
-                  phone: "11 97214-2255",
-                ),
+              builder: (context) => ContactFormView(
+                model: model,
               ),
             ),
           );

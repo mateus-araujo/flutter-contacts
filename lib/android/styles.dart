@@ -7,6 +7,11 @@ const accentColor = const Color(0xFFFFFFFF);
 ThemeData androidTheme() {
   return ThemeData(
     brightness: brightness,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        primary: primaryColor,
+      ),
+    ),
     textTheme: TextTheme(
       bodyText2: TextStyle(
         fontFamily: "Poppins",

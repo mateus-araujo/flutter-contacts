@@ -18,6 +18,8 @@ dependencies:
   url_launcher: ^6.0.3
   local_auth: ^1.1.4
   sqflite_common_ffi: ^2.0.0
+  form_validator: ^1.0.0-nullsafety.1
+  flutter_multi_formatter: ^2.0.2
   
 
 dev_dependencies:
