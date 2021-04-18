@@ -1,7 +1,5 @@
 abstract class Failure implements Exception {}
 
-class InvalidTextError implements Failure {}
-
 class DatabaseNotFound implements Failure {}
 
 class DatabaseError implements Failure {

@@ -1,5 +1,5 @@
 import 'package:contacts/core/interfaces/database/database_connection.dart';
-import 'package:contacts/core/settings.dart';
+import 'package:contacts/core/settings/database.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

@@ -1,7 +1,7 @@
 import 'package:contacts/core/models/contact.model.dart';
 import 'package:contacts/core/repositories/contact_repository.dart';
 import 'package:contacts/core/services/sqflite_service.dart';
-import 'package:contacts/core/settings.dart';
+import 'package:contacts/core/settings/database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';
