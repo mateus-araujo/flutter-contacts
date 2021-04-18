@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:contacts/shared/styles.dart';
+
 const brightness = Brightness.light;
-const primaryColor = const Color(0xFF2AACFF);
-const accentColor = const Color(0xFFFFFFFF);
+const primaryColor = basePrimaryColor;
+const accentColor = baseAccentColor;
 
 ThemeData androidTheme() {
   return ThemeData(

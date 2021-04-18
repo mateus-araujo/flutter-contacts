@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:contacts/android/views/address.view.dart';
 import 'package:contacts/android/views/contact_form.view.dart';
 import 'package:contacts/android/views/loading.view.dart';
+import 'package:contacts/android/widgets/contact_details_actions_row.widget.dart';
 import 'package:contacts/core/models/contact.model.dart';
 import 'package:contacts/core/repositories/contact_repository.dart';
+import 'package:contacts/shared/widgets/contact_details_description.widget.dart';
+import 'package:contacts/shared/widgets/contact_details_image.widget.dart';
 
 class DetailsView extends StatefulWidget {
   final int id;
@@ -16,6 +19,12 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
+  final circleBorderShape = ElevatedButton.styleFrom(
+    shape: CircleBorder(
+      side: BorderSide.none,
+    ),
+  );
+
   Future<ContactModel?> getContact() async {
     final repository = await ContactRepository.repository;
 
@@ -54,91 +63,19 @@ class _DetailsViewState extends State<DetailsView> {
             height: 10,
             width: double.infinity,
           ),
-          Container(
-            width: 200,
-            height: 200,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(200),
-            ),
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  image: DecorationImage(
-                    image: model.image == null
-                        ? AssetImage("assets/images/profile-picture.png")
-                        : AssetImage(model.image!),
-                  )),
-            ),
-          ),
+          ContactDetailsImage(image: model.image ?? ''),
           SizedBox(
             height: 10,
           ),
-          Text(
-            model.name!,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "11 98741-2282",
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Text(
-            "andre@balta.io",
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
+          ContactDetailsDescription(
+            name: model.name ?? '',
+            phone: model.phone ?? '',
+            email: model.email ?? '',
           ),
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              FlatButton(
-                onPressed: () {},
-                color: Theme.of(context).primaryColor,
-                shape: CircleBorder(
-                  side: BorderSide.none,
-                ),
-                child: Icon(
-                  Icons.phone,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              FlatButton(
-                onPressed: () {},
-                color: Theme.of(context).primaryColor,
-                shape: CircleBorder(
-                  side: BorderSide.none,
-                ),
-                child: Icon(
-                  Icons.email,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-              FlatButton(
-                onPressed: () {},
-                color: Theme.of(context).primaryColor,
-                shape: CircleBorder(
-                  side: BorderSide.none,
-                ),
-                child: Icon(
-                  Icons.camera_enhance,
-                  color: Theme.of(context).accentColor,
-                ),
-              ),
-            ],
-          ),
+          ContactDetailsActionsRow(contact: model),
           SizedBox(
             height: 40,
           ),
@@ -168,7 +105,7 @@ class _DetailsViewState extends State<DetailsView> {
               ],
             ),
             isThreeLine: true,
-            trailing: FlatButton(
+            trailing: TextButton(
               onPressed: () {
                 Navigator.push(
                   context,

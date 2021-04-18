@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:contacts/android/views/contact_form.view.dart';
-import 'package:contacts/android/widgets/contact_list_item.view.dart';
+import 'package:contacts/android/widgets/contact_list_item.widget.dart';
 import 'package:contacts/android/widgets/search_appbar.widget.dart';
 import 'package:contacts/core/controllers/home_controller.dart';
 import 'package:contacts/core/models/contact.model.dart';
