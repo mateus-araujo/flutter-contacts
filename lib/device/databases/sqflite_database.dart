@@ -1,21 +1,21 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SQFLiteConnection {
-  late Database _sqfliteConnection;
+class SQFLiteDatabase {
+  late Database _sqfliteDatabase;
 
-  SQFLiteConnection._();
+  SQFLiteDatabase._();
 
-  static Future<SQFLiteConnection> create(
+  static Future<SQFLiteDatabase> create(
       String databaseName, String databaseTableScript) async {
-    var sqfliteConnection = SQFLiteConnection._();
+    var sqfliteConnection = SQFLiteDatabase._();
     await sqfliteConnection._initDatabase(databaseName, databaseTableScript);
     return sqfliteConnection;
   }
 
   Future<Database> _initDatabase(
       String databaseName, String databaseTableScript) async {
-    final connection = await openDatabase(
+    final database = await openDatabase(
       join(await getDatabasesPath(), databaseName),
       onCreate: (db, version) {
         return db.execute(databaseTableScript);
@@ -23,10 +23,10 @@ class SQFLiteConnection {
       version: 1,
     );
 
-    _sqfliteConnection = connection;
+    _sqfliteDatabase = database;
 
-    return connection;
+    return database;
   }
 
-  Database get connection => _sqfliteConnection;
+  Database get database => _sqfliteDatabase;
 }
