@@ -1,3 +1,4 @@
+import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
@@ -65,11 +66,10 @@ class _ContactFormViewState extends State<ContactFormView> {
   }
 
   onError() {
-    final snackBar = SnackBar(
-      content: Text('Ops, algo deu errado!'),
+    UIService.displaySnackBar(
+      context: context,
+      message: 'Ops, algo deu errado!',
     );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override

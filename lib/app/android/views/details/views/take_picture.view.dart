@@ -13,6 +13,7 @@ class _TakePictureViewState extends State<TakePictureView> {
   Future<String> takePhoto() async {
     try {
       await _controller.initialize();
+      // _controller.setFlashMode(FlashMode.off);
 
       final file = await _controller.takePicture();
       return file.path;

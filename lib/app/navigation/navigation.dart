@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:contacts/app/android/contact_form/contact_form.view.dart';
-import 'package:contacts/app/android/details/views/address.view.dart';
-import 'package:contacts/app/android/details/views/crop_picture.view.dart';
-import 'package:contacts/app/android/details/views/details.view.dart';
-import 'package:contacts/app/android/details/views/take_picture.view.dart';
-import 'package:contacts/app/android/home/home.view.dart';
+import 'package:contacts/app/android/views/contact_form/contact_form.view.dart';
+import 'package:contacts/app/android/views/details/views/address.view.dart';
+import 'package:contacts/app/android/views/details/views/crop_picture.view.dart';
+import 'package:contacts/app/android/views/details/views/details.view.dart';
+import 'package:contacts/app/android/views/details/views/take_picture.view.dart';
+import 'package:contacts/app/android/views/home/home.view.dart';
 import 'package:contacts/app/navigation/routes.dart';
 
 class Navigation {

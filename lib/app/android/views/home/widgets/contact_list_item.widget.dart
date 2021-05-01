@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:contacts/app/navigation/routes.dart';
 import 'package:flutter/material.dart';
 
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 class ContactListItem extends StatelessWidget {

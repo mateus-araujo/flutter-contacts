@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/android/loading/loading.view.dart';
+import 'package:contacts/app/android/utils/services/ui_service.dart';
+import 'package:contacts/app/android/views/loading/loading.view.dart';
 import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/app/shared/controllers/home_controller.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
@@ -38,6 +39,34 @@ class _DetailsViewState extends State<DetailsView> {
     final contact = data.fold((_) => null, (r) => r);
 
     return contact;
+  }
+
+  deleteContact() async {
+    final result = await _repository.deleteContact(widget.id);
+    result.fold((l) {
+      UIService.displaySnackBar(
+        context: context,
+        message: 'Houve um erro excluir o contato',
+      );
+    }, (r) => Navigator.pushNamed(context, Routes.home));
+  }
+
+  onDelete() {
+    UIService.displayDialog(
+      context: context,
+      title: 'Exclusão de Contato',
+      content: 'Deseja mesmo excluir este contato?',
+      actions: [
+        DialogAction(
+          label: 'Cancelar',
+          onPressed: () => Navigator.pop(context),
+        ),
+        DialogAction(
+          label: 'Excluir',
+          onPressed: deleteContact,
+        ),
+      ],
+    );
   }
 
   @override
@@ -126,6 +155,20 @@ class _DetailsViewState extends State<DetailsView> {
                 child: Icon(
                   Icons.pin_drop,
                   color: Theme.of(context).primaryColor,
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Container(
+                width: double.infinity,
+                height: 50,
+                child: TextButton(
+                  onPressed: onDelete,
+                  child: Text(
+                    "Excluir Contato",
+                  ),
                 ),
               ),
             ),

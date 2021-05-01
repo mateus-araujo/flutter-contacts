@@ -10,6 +10,9 @@ class HomeController = _HomeController with _$HomeController;
 
 abstract class _HomeController with Store {
   @observable
+  bool loading = false;
+
+  @observable
   bool showSearch = false;
 
   @observable
@@ -22,6 +25,7 @@ abstract class _HomeController with Store {
 
   @action
   search(String name) async {
+    loading = true;
     final repository = GetIt.instance.get<ContactRepository>();
 
     final data = await repository.searchByName(name);
@@ -30,6 +34,9 @@ abstract class _HomeController with Store {
       contacts.clear();
     }
 
+    await Future.delayed(Duration(milliseconds: 300));
+
     data.fold((l) => null, (r) => contacts.addAll(r));
+    loading = false;
   }
 }

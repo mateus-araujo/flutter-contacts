@@ -1,3 +1,4 @@
+import 'package:contacts/app/android/widgets/loading.widget.dart';
 import 'package:contacts/app/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -30,14 +31,18 @@ class _HomeViewState extends State<HomeView> {
         child: SearchAppBar(),
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
-      body: Observer(
-        builder: (_) => ListView.builder(
-          itemCount: _controller.contacts.length,
-          itemBuilder: (context, index) => ContactListItem(
-            model: _controller.contacts[index],
-          ),
-        ),
-      ),
+      body: Observer(builder: (_) {
+        if (_controller.loading) {
+          return Loading();
+        } else {
+          return ListView.builder(
+            itemCount: _controller.contacts.length,
+            itemBuilder: (context, index) => ContactListItem(
+              model: _controller.contacts[index],
+            ),
+          );
+        }
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(
