@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
-
-import '../views/crop_picture.view.dart';
-import '../views/take_picture.view.dart';
 
 class ContactDetailsActionsRow extends StatefulWidget {
   final Contact contact;
@@ -27,24 +25,16 @@ class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
   final _repository = GetIt.instance.get<ContactRepository>();
 
   takePicture() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TakePictureView(),
-      ),
-    ).then((path) {
+    Navigator.pushNamed(context, Routes.takePicture).then((path) {
       if (path != null) cropPicture(path);
     });
   }
 
   cropPicture(path) {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => CropPictureView(
-          path: path,
-        ),
-      ),
+      Routes.cropPicture,
+      arguments: {'path': path},
     ).then((path) => updateImage(path));
   }
 

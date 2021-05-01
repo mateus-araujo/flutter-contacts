@@ -4,7 +4,7 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/android/home/home.view.dart';
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -61,12 +61,7 @@ class _ContactFormViewState extends State<ContactFormView> {
   }
 
   onSuccess() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeView(),
-      ),
-    );
+    Navigator.pushNamed(context, Routes.home);
   }
 
   onError() {

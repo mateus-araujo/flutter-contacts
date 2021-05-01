@@ -1,8 +1,8 @@
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/android/contact_form/contact_form.view.dart';
 import 'package:contacts/app/shared/controllers/home_controller.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -40,13 +40,10 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (context) => ContactFormView(
-                model: Contact(id: 0),
-              ),
-            ),
+            Routes.contactForm,
+            arguments: {'model': Contact(id: 0)},
           );
         },
         backgroundColor: Theme.of(context).primaryColor,

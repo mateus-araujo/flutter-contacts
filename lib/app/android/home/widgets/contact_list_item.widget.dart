@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:flutter/material.dart';
 
-import 'package:contacts/app/android/details/views/details.view.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 class ContactListItem extends StatelessWidget {
@@ -29,13 +29,10 @@ class ContactListItem extends StatelessWidget {
       trailing: TextButton(
         onPressed: () {
           if (model.id != null) {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                builder: (context) => DetailsView(
-                  id: model.id ?? 0,
-                ),
-              ),
+              Routes.details,
+              arguments: {'id': model.id},
             );
           }
         },

@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_crop/image_crop.dart';
 
 class TakePictureView extends StatefulWidget {
   @override
@@ -10,13 +9,6 @@ class TakePictureView extends StatefulWidget {
 
 class _TakePictureViewState extends State<TakePictureView> {
   final _controller = GetIt.instance.get<CameraController>();
-
-  @override
-  void initState() {
-    super.initState();
-
-    ImageCrop.requestPermissions();
-  }
 
   Future<String> takePhoto() async {
     try {

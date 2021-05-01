@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/android/contact_form/contact_form.view.dart';
 import 'package:contacts/app/android/loading/loading.view.dart';
+import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/app/shared/controllers/home_controller.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/app/shared/widgets/contact_details_image.widget.dart';
@@ -10,7 +10,6 @@ import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 import '../widgets/contact_details_actions_row.widget.dart';
-import 'address.view.dart';
 
 class DetailsView extends StatefulWidget {
   final int id;
@@ -122,12 +121,7 @@ class _DetailsViewState extends State<DetailsView> {
               isThreeLine: true,
               trailing: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddressView(),
-                    ),
-                  );
+                  Navigator.pushNamed(context, Routes.address);
                 },
                 child: Icon(
                   Icons.pin_drop,
@@ -139,13 +133,10 @@ class _DetailsViewState extends State<DetailsView> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
-                builder: (context) => ContactFormView(
-                  model: model,
-                ),
-              ),
+              Routes.contactForm,
+              arguments: {'model': model},
             );
           },
           backgroundColor: Theme.of(context).primaryColor,
