@@ -27,12 +27,27 @@ class UIService {
   static void displaySnackBar({
     required BuildContext context,
     required String message,
+    SnackBarType? type,
   }) {
     final snackBar = SnackBar(
       content: Text(message),
+      backgroundColor: _getSnackBarColor(type),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  static Color? _getSnackBarColor(SnackBarType? type) {
+    switch (type) {
+      case SnackBarType.alert:
+        return Colors.orange;
+      case SnackBarType.error:
+        return Colors.red;
+      case SnackBarType.success:
+        return Colors.green;
+      default:
+        return null;
+    }
   }
 }
 
@@ -44,4 +59,10 @@ class DialogAction {
     required this.label,
     required this.onPressed,
   });
+}
+
+enum SnackBarType {
+  alert,
+  error,
+  success,
 }
