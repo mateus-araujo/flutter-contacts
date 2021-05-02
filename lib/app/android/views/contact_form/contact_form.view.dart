@@ -1,10 +1,10 @@
-import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
@@ -63,6 +63,11 @@ class _ContactFormViewState extends State<ContactFormView> {
 
   onSuccess() {
     Navigator.pushNamed(context, Routes.home);
+    UIService.displaySnackBar(
+      context: context,
+      message: widget.model!.id == 0 ? 'Contato criado' : 'Alterações salvas!',
+      type: SnackBarType.success,
+    );
   }
 
   onError() {

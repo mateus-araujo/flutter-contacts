@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/android/views/loading/loading.view.dart';
 import 'package:contacts/app/navigation/routes.dart';
-import 'package:contacts/app/shared/controllers/home_controller.dart';
+import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/app/shared/widgets/contact_details_image.widget.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
@@ -43,12 +43,22 @@ class _DetailsViewState extends State<DetailsView> {
 
   deleteContact() async {
     final result = await _repository.deleteContact(widget.id);
-    result.fold((l) {
+
+    result.fold((_) {
       UIService.displaySnackBar(
         context: context,
         message: 'Houve um erro excluir o contato',
+        type: SnackBarType.error,
       );
-    }, (r) => Navigator.pushNamed(context, Routes.home));
+    }, (r) {
+      Navigator.pushNamed(context, Routes.home);
+
+      UIService.displaySnackBar(
+        context: context,
+        message: 'Contato excluído',
+        type: SnackBarType.success,
+      );
+    });
   }
 
   onDelete() {
