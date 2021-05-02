@@ -1,8 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
-import 'package:contacts/domain/entities/contact.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
+import 'package:contacts/domain/entities/contact.dart';
+
+import 'home_state.dart';
 
 part 'home_controller.g.dart';
 
@@ -10,7 +12,7 @@ class HomeController = _HomeController with _$HomeController;
 
 abstract class _HomeController with Store {
   @observable
-  bool loading = false;
+  HomeState state = HomeState.empty;
 
   @observable
   bool showSearch = false;
@@ -25,10 +27,10 @@ abstract class _HomeController with Store {
 
   @action
   search(String name) async {
-    loading = true;
+    state = HomeState.loading;
     final repository = GetIt.instance.get<ContactRepository>();
 
-    final data = await repository.searchByName(name);
+    final result = await repository.searchByName(name);
 
     if (contacts.isNotEmpty) {
       contacts.clear();
@@ -36,7 +38,16 @@ abstract class _HomeController with Store {
 
     await Future.delayed(Duration(milliseconds: 300));
 
-    data.fold((l) => null, (r) => contacts.addAll(r));
-    loading = false;
+    result.fold(
+      (_) => state = HomeState.error,
+      (list) {
+        if (list.isEmpty) {
+          state = HomeState.empty;
+        } else {
+          contacts.addAll(list);
+          state = HomeState.success;
+        }
+      },
+    );
   }
 }

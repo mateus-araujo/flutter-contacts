@@ -1,10 +1,12 @@
-import 'package:contacts/app/android/widgets/loading.widget.dart';
-import 'package:contacts/app/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/shared/controllers/home_controller.dart';
+import 'package:contacts/app/android/widgets/empty_message.widget.dart';
+import 'package:contacts/app/android/widgets/loading.widget.dart';
+import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/controllers/home/home_controller.dart';
+import 'package:contacts/app/shared/controllers/home/home_state.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 import 'widgets/contact_list_item.widget.dart';
@@ -32,15 +34,20 @@ class _HomeViewState extends State<HomeView> {
         preferredSize: Size.fromHeight(kToolbarHeight),
       ),
       body: Observer(builder: (_) {
-        if (_controller.loading) {
-          return Loading();
-        } else {
-          return ListView.builder(
-            itemCount: _controller.contacts.length,
-            itemBuilder: (context, index) => ContactListItem(
-              model: _controller.contacts[index],
-            ),
-          );
+        switch (_controller.state) {
+          case HomeState.loading:
+            return Loading();
+          case HomeState.empty:
+            return EmptyMessage(
+                icon: Icons.contact_page_outlined,
+                message: 'Não foram encontrados contatos cadastrados');
+          default:
+            return ListView.builder(
+              itemCount: _controller.contacts.length,
+              itemBuilder: (context, index) => ContactListItem(
+                model: _controller.contacts[index],
+              ),
+            );
         }
       }),
       floatingActionButton: FloatingActionButton(

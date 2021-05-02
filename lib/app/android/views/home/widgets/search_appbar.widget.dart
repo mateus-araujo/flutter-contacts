@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/shared/controllers/home_controller.dart';
+import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 
 class SearchAppBar extends StatelessWidget {
   final _controller = GetIt.instance.get<HomeController>();

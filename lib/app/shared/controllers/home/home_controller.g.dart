@@ -9,18 +9,18 @@ part of 'home_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeController on _HomeController, Store {
-  final _$loadingAtom = Atom(name: '_HomeController.loading');
+  final _$stateAtom = Atom(name: '_HomeController.state');
 
   @override
-  bool get loading {
-    _$loadingAtom.reportRead();
-    return super.loading;
+  HomeState get state {
+    _$stateAtom.reportRead();
+    return super.state;
   }
 
   @override
-  set loading(bool value) {
-    _$loadingAtom.reportWrite(value, super.loading, () {
-      super.loading = value;
+  set state(HomeState value) {
+    _$stateAtom.reportWrite(value, super.state, () {
+      super.state = value;
     });
   }
 
@@ -78,7 +78,7 @@ mixin _$HomeController on _HomeController, Store {
   @override
   String toString() {
     return '''
-loading: ${loading},
+state: ${state},
 showSearch: ${showSearch},
 contacts: ${contacts}
     ''';

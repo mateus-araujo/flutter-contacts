@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
 
-import 'package:contacts/app/shared/controllers/home_controller.dart';
+import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/databases/sqflite_database.dart';
 import 'package:contacts/device/repositories/sqflite_repository.dart';
