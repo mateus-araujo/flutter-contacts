@@ -1,4 +1,4 @@
-abstract class DatabaseRepository {
+abstract class IDatabaseRepository {
   Future<int> insert(Map<String, Object?> item);
   Future<List<Map<String, Object?>>> getList();
   Future<List<Map<String, Object?>>> searchTextByField(

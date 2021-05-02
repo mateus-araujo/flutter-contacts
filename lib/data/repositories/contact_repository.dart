@@ -6,7 +6,7 @@ import 'package:contacts/domain/repositories/contact_repository.dart';
 import 'package:contacts/domain/repositories/database_repository.dart';
 
 class ContactRepository implements IContactRepository {
-  DatabaseRepository service;
+  IDatabaseRepository service;
   ContactRepository(this.service);
 
   @override

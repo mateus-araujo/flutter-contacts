@@ -7,3 +7,5 @@ class DatabaseError implements Failure {
 
   DatabaseError({this.message});
 }
+
+class HttpError implements Failure {}

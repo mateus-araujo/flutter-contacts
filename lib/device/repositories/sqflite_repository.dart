@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:contacts/domain/errors/errors.dart';
 import 'package:contacts/domain/repositories/database_repository.dart';
 
-class SQFLiteRepository implements DatabaseRepository {
+class SQFLiteRepository implements IDatabaseRepository {
   final Database db;
   final String tableName;
 
