@@ -16,13 +16,14 @@ class Navigation {
   Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
       case Routes.address:
-        return _buildRoute(settings, AddressView());
+        final args = settings.arguments as Map;
+        return _buildRoute(settings, AddressView(contact: args['contact']));
       case Routes.cropPicture:
         final args = settings.arguments as Map;
         return _buildRoute(settings, CropPictureView(path: args['path']));
       case Routes.contactForm:
         final args = settings.arguments as Map;
-        return _buildRoute(settings, ContactFormView(model: args['model']));
+        return _buildRoute(settings, ContactFormView(contact: args['contact']));
       case Routes.details:
         final args = settings.arguments as Map;
         return _buildRoute(settings, DetailsView(id: args['id']));

@@ -55,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
           Navigator.pushNamed(
             context,
             Routes.contactForm,
-            arguments: {'model': Contact(id: 0)},
+            arguments: {'contact': Contact(id: 0)},
           );
         },
         backgroundColor: Theme.of(context).primaryColor,

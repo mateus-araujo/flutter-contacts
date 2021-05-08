@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:contacts/data/services/http_service.dart';
+import 'package:contacts/data/utils/constants.dart';
 import 'package:contacts/domain/errors/errors.dart';
 import 'package:contacts/domain/repositories/address_repository.dart';
 import 'package:dartz/dartz.dart';
@@ -10,8 +11,7 @@ class AddressRepository implements IAddressRepository {
   late Dio _dio;
   late HttpService _service;
 
-  String _mapboxAccessToken =
-      'pk.eyJ1IjoibWF0ZXVzLWFyYXVqbyIsImEiOiJja2J0cXFjeWwwY2twMnR0OGJ6azBtZ2U5In0.y6Zubm93R3pGekwpHVidLA';
+  String _mapboxAccessToken = Constants.mapboxAccessToken;
 
   AddressRepository() {
     _dio = Dio(BaseOptions(

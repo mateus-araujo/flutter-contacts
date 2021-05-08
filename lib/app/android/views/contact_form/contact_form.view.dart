@@ -10,9 +10,9 @@ import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 class ContactFormView extends StatefulWidget {
-  final Contact? model;
+  final Contact? contact;
 
-  ContactFormView({this.model});
+  ContactFormView({this.contact});
 
   @override
   _ContactFormViewState createState() => _ContactFormViewState();
@@ -38,36 +38,38 @@ class _ContactFormViewState extends State<ContactFormView> {
 
     _formKey.currentState!.save();
 
-    if (widget.model!.id == 0)
-      createContact(widget.model!);
+    if (widget.contact!.id == 0)
+      createContact(widget.contact!);
     else
       updateContact();
   }
 
-  createContact(Contact model) {
-    widget.model!.id = null;
-    widget.model!.image = null;
+  createContact(Contact contact) {
+    widget.contact!.id = null;
+    widget.contact!.image = null;
 
     _repository
-        .createContact(model)
+        .createContact(contact)
         .then((_) => onSuccess())
         .catchError((_) => onError());
   }
 
   updateContact() {
     _repository
-        .updateContact(widget.model!)
+        .updateContact(widget.contact!)
         .then((_) => onSuccess())
         .catchError((_) => onError());
   }
 
   onSuccess() {
-    Navigator.pushNamed(context, Routes.home);
     UIService.displaySnackBar(
       context: context,
-      message: widget.model!.id == 0 ? 'Contato criado' : 'Alterações salvas!',
+      message:
+          widget.contact!.id == 0 ? 'Contato criado' : 'Alterações salvas!',
       type: SnackBarType.success,
     );
+
+    Navigator.pushNamed(context, Routes.home);
   }
 
   onError() {
@@ -82,7 +84,7 @@ class _ContactFormViewState extends State<ContactFormView> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: widget.model!.id == 0
+        title: widget.contact!.id == 0
             ? Text("Novo Contato")
             : Text("Editar Contato"),
       ),
@@ -96,9 +98,9 @@ class _ContactFormViewState extends State<ContactFormView> {
                 decoration: InputDecoration(labelText: "Nome"),
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.words,
-                initialValue: widget.model?.name,
+                initialValue: widget.contact?.name,
                 onChanged: (value) {
-                  widget.model?.name = value;
+                  widget.contact?.name = value;
                 },
                 validator: validatorName,
                 // initialValue: wi,
@@ -107,18 +109,18 @@ class _ContactFormViewState extends State<ContactFormView> {
                 decoration: InputDecoration(labelText: "Telefone"),
                 keyboardType: TextInputType.phone,
                 inputFormatters: [phoneInputFormatter],
-                initialValue: widget.model?.phone,
+                initialValue: widget.contact?.phone,
                 onChanged: (value) {
-                  widget.model?.phone = value;
+                  widget.contact?.phone = value;
                 },
                 validator: validatorPhone,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "E-mail"),
                 keyboardType: TextInputType.emailAddress,
-                initialValue: widget.model?.email,
+                initialValue: widget.contact?.email,
                 onChanged: (value) {
-                  widget.model?.email = value;
+                  widget.contact?.email = value;
                 },
                 validator: validatorEmail,
               ),

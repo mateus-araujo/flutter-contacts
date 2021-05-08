@@ -1,5 +1,4 @@
-import 'package:contacts/domain/errors/errors.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -8,6 +7,7 @@ import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/repositories/sqflite_repository.dart';
 import 'package:contacts/device/utils/contacts_database.dart';
 import 'package:contacts/domain/entities/contact.dart';
+import 'package:contacts/domain/errors/errors.dart';
 
 main() {
   sqfliteFfiInit();
@@ -69,11 +69,11 @@ main() {
     test('should get contact by id', () async {
       final data = await repository.createContact(Contact());
 
-      data.fold((_) => null, (id) async {
-        final contact = await repository.getContactById(id);
+      final id = data.fold((_) => null, (id) => id);
+      final result = await repository.getContactById(id!);
+      final contact = result.fold((_) => null, (r) => r);
 
-        expect(contact, isA<Contact>());
-      });
+      expect(contact, isA<Contact>());
     });
 
     test('should update a contact', () async {

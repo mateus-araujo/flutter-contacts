@@ -1,9 +1,14 @@
 import 'package:camera/camera.dart';
+import 'package:contacts/data/repositories/address_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:contacts/app/shared/controllers/address/address_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
+import 'package:contacts/data/services/http_service.dart';
 import 'package:contacts/device/databases/sqflite_database.dart';
+import 'package:contacts/device/repositories/location_repository.dart';
 import 'package:contacts/device/repositories/sqflite_repository.dart';
 import 'package:contacts/device/utils/contacts_database.dart';
 
@@ -46,4 +51,8 @@ void setup() {
 
     return controller;
   }, dependsOn: [CameraDescription]);
+
+  GetIt.instance.registerSingleton<LocationRepository>(LocationRepository());
+  GetIt.instance.registerSingleton<AddressRepository>(AddressRepository());
+  GetIt.instance.registerSingleton<HttpService>(HttpService(Dio()));
 }

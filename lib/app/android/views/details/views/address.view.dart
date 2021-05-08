@@ -1,42 +1,74 @@
+import 'package:contacts/domain/entities/contact.dart';
 import 'package:flutter/material.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
-class AddressView extends StatelessWidget {
+import 'package:contacts/app/shared/controllers/address/address_controller.dart';
+import 'package:contacts/data/utils/constants.dart';
+
+class AddressView extends StatefulWidget {
+  final Contact contact;
+
+  const AddressView({Key? key, required this.contact}) : super(key: key);
+
+  @override
+  _AddressViewState createState() => _AddressViewState();
+}
+
+class _AddressViewState extends State<AddressView> {
+  late final _addressController = AddressController(contact: widget.contact);
+
+  handleSearch(String address) async {
+    await _addressController.onSearch(context, address);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Endereço do Contato"),
+        actions: [
+          TextButton(
+            child: Icon(Icons.save),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
           Container(
             height: 80,
-            child: ListTile(
-              title: Text(
-                "Endereço atual",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Rua do Desenvolvedor, 256",
+            child: ValueListenableBuilder<Contact>(
+              valueListenable: _addressController.contactNotifier,
+              builder: (context, value, child) {
+                return ListTile(
+                  title: Text(
+                    "Endereço atual",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
-                  Text(
-                    "Piracicaba/SP",
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        value.addressLine1 ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                      Text(
+                        value.addressLine2 ?? "",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              isThreeLine: true,
+                  isThreeLine: true,
+                );
+              },
             ),
           ),
           Container(
@@ -47,12 +79,18 @@ class AddressView extends StatelessWidget {
                 decoration: InputDecoration(
                   labelText: "Pesquisar...",
                 ),
+                onFieldSubmitted: (value) => handleSearch(value),
               ),
             ),
           ),
           Expanded(
-            child: Container(
-              color: Colors.blue.withOpacity(0.2),
+            child: MapboxMap(
+              accessToken: Constants.mapboxAccessToken,
+              onMapCreated: _addressController.onMapCreated,
+              initialCameraPosition:
+                  CameraPosition(target: LatLng(-3.74182, -38.50227)),
+              minMaxZoomPreference: MinMaxZoomPreference(14, 20),
+              onStyleLoadedCallback: onStyleLoadedCallback,
             ),
           ),
         ],
@@ -63,4 +101,6 @@ class AddressView extends StatelessWidget {
       ),
     );
   }
+
+  void onStyleLoadedCallback() {}
 }

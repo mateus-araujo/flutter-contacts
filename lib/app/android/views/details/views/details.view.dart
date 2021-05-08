@@ -95,7 +95,7 @@ class _DetailsViewState extends State<DetailsView> {
     );
   }
 
-  Widget _buildPage(BuildContext context, Contact model) {
+  Widget _buildPage(BuildContext context, Contact contact) {
     return WillPopScope(
       onWillPop: () async {
         _controller.search("");
@@ -111,20 +111,20 @@ class _DetailsViewState extends State<DetailsView> {
               height: 10,
               width: double.infinity,
             ),
-            ContactDetailsImage(image: model.image ?? ''),
+            ContactDetailsImage(image: contact.image ?? ''),
             SizedBox(
               height: 10,
             ),
             ContactDetailsDescription(
-              name: model.name ?? '',
-              phone: model.phone ?? '',
-              email: model.email ?? '',
+              name: contact.name ?? '',
+              phone: contact.phone ?? '',
+              email: contact.email ?? '',
             ),
             SizedBox(
               height: 20,
             ),
             ContactDetailsActionsRow(
-              contact: model,
+              contact: contact,
               onUpdate: () {
                 setState(() {});
               },
@@ -160,7 +160,8 @@ class _DetailsViewState extends State<DetailsView> {
               isThreeLine: true,
               trailing: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.address);
+                  Navigator.pushNamed(context, Routes.address,
+                      arguments: {'contact': contact});
                 },
                 child: Icon(
                   Icons.pin_drop,
@@ -189,7 +190,7 @@ class _DetailsViewState extends State<DetailsView> {
             Navigator.pushNamed(
               context,
               Routes.contactForm,
-              arguments: {'model': model},
+              arguments: {'contact': contact},
             );
           },
           backgroundColor: Theme.of(context).primaryColor,

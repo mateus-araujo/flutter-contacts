@@ -6,13 +6,13 @@ import 'package:contacts/domain/repositories/contact_repository.dart';
 import 'package:contacts/domain/repositories/database_repository.dart';
 
 class ContactRepository implements IContactRepository {
-  IDatabaseRepository service;
-  ContactRepository(this.service);
+  IDatabaseRepository database;
+  ContactRepository(this.database);
 
   @override
   Future<Either<Failure, int>> createContact(Contact model) async {
     try {
-      final id = await service.insert(model.toMap());
+      final id = await database.insert(model.toMap());
 
       return Right(id);
     } catch (e) {
@@ -24,7 +24,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<Either<Failure, List<Contact>>> getContacts() async {
     try {
-      final maps = await service.getList();
+      final maps = await database.getList();
 
       final list = List.generate(
         maps.length,
@@ -40,7 +40,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<Either<Failure, List<Contact>>> searchByName(String term) async {
     try {
-      final maps = await service.searchTextByField('name', term);
+      final maps = await database.searchTextByField('name', term);
 
       final list = List.generate(
         maps.length,
@@ -56,7 +56,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<Either<Failure, Contact>> getContactById(int id) async {
     try {
-      final map = await service.getFirstById(id);
+      final map = await database.getFirstById(id);
       final contact = Contact.fromMap(map);
 
       return Right(contact);
@@ -68,7 +68,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<Either<Failure, int>> updateContact(Contact model) async {
     try {
-      final id = await service.update(model.id!, model.toMap());
+      final id = await database.update(model.id!, model.toMap());
 
       return Right(id);
     } catch (e) {
@@ -79,7 +79,7 @@ class ContactRepository implements IContactRepository {
   @override
   Future<Either<Failure, int>> deleteContact(int contactId) async {
     try {
-      final id = await service.delete(contactId);
+      final id = await database.delete(contactId);
 
       return Right(id);
     } catch (e) {
@@ -96,7 +96,7 @@ class ContactRepository implements IContactRepository {
 
       contact!.image = imagePath;
 
-      final id = await service.update(contactId, contact.toMap());
+      final id = await database.update(contactId, contact.toMap());
 
       return Right(id);
     } catch (e) {
@@ -115,7 +115,7 @@ class ContactRepository implements IContactRepository {
       contact.addressLine2 = addressLine2;
       contact.latLng = latLng;
 
-      final id = await service.update(contactId, contact.toMap());
+      final id = await database.update(contactId, contact.toMap());
 
       return Right(id);
     } catch (e) {
