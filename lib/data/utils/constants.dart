@@ -1,5 +1,5 @@
-import 'package:contacts/data/utils/sensitive.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Constants {
-  static const mapboxAccessToken = mapboxApiKey;
+  static String mapboxAccessToken = env['MAPBOX_ACCESS_TOKEN'] as String;
 }

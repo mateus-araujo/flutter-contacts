@@ -7,8 +7,11 @@ import 'package:contacts/app/android/android.app.dart';
 import 'package:contacts/app/ios/ios.app.dart';
 import 'package:contacts/app/shared/bindings.dart';
 import 'package:contacts/app/shared/utils/validation_locale.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 
-void main() {
+Future<void> main() async {
+  await DotEnv.load();
+
   setup();
   ValidationBuilder.globalLocale = ValidationLocale();
 
