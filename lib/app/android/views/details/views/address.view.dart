@@ -1,9 +1,9 @@
-import 'package:contacts/domain/entities/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import 'package:contacts/app/shared/controllers/address/address_controller.dart';
 import 'package:contacts/data/utils/constants.dart';
+import 'package:contacts/domain/entities/contact.dart';
 
 class AddressView extends StatefulWidget {
   final Contact contact;
@@ -30,7 +30,9 @@ class _AddressViewState extends State<AddressView> {
         actions: [
           TextButton(
             child: Icon(Icons.save),
-            onPressed: () {},
+            onPressed: () {
+              _addressController.updateContactAddress(context);
+            },
           ),
         ],
       ),
@@ -38,37 +40,32 @@ class _AddressViewState extends State<AddressView> {
         children: <Widget>[
           Container(
             height: 80,
-            child: ValueListenableBuilder<Contact>(
-              valueListenable: _addressController.contactNotifier,
-              builder: (context, value, child) {
-                return ListTile(
-                  title: Text(
-                    "Endereço atual",
+            child: ListTile(
+              title: Text(
+                "Endereço atual",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    _addressController.contact.addressLine1 ?? "",
                     style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                      fontSize: 12,
                     ),
                   ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        value.addressLine1 ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        value.addressLine2 ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    _addressController.contact.addressLine2 ?? "",
+                    style: TextStyle(
+                      fontSize: 12,
+                    ),
                   ),
-                  isThreeLine: true,
-                );
-              },
+                ],
+              ),
+              isThreeLine: true,
             ),
           ),
           Container(
@@ -87,9 +84,10 @@ class _AddressViewState extends State<AddressView> {
             child: MapboxMap(
               accessToken: Constants.mapboxAccessToken,
               onMapCreated: _addressController.onMapCreated,
-              initialCameraPosition:
-                  CameraPosition(target: LatLng(-3.74182, -38.50227)),
-              minMaxZoomPreference: MinMaxZoomPreference(14, 20),
+              initialCameraPosition: CameraPosition(
+                target: LatLng(-3.74182, -38.50227),
+                zoom: 16,
+              ),
               onStyleLoadedCallback: onStyleLoadedCallback,
             ),
           ),

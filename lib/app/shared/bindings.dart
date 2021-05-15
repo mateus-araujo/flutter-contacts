@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/data/repositories/address_repository.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
@@ -29,6 +30,10 @@ void setup() {
 
   GetIt.instance.registerSingletonWithDependencies<HomeController>(
     () => HomeController(),
+    dependsOn: [ContactRepository],
+  );
+  GetIt.instance.registerSingletonWithDependencies<ContactController>(
+    () => ContactController(),
     dependsOn: [ContactRepository],
   );
 

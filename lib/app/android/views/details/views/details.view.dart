@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/android/views/loading/loading.view.dart';
 import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/app/shared/widgets/contact_details_image.widget.dart';
-import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 import '../widgets/contact_details_actions_row.widget.dart';
@@ -25,8 +26,8 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
-  final _repository = GetIt.instance.get<ContactRepository>();
-  final _controller = GetIt.instance.get<HomeController>();
+  final _homeController = GetIt.instance.get<HomeController>();
+  final _contactController = GetIt.instance.get<ContactController>();
 
   final circleBorderShape = ElevatedButton.styleFrom(
     shape: CircleBorder(
@@ -34,31 +35,10 @@ class _DetailsViewState extends State<DetailsView> {
     ),
   );
 
-  Future<Contact?> getContact() async {
-    final data = await _repository.getContactById(widget.id);
-    final contact = data.fold((_) => null, (r) => r);
-
-    return contact;
-  }
-
-  deleteContact() async {
-    final result = await _repository.deleteContact(widget.id);
-
-    result.fold((_) {
-      UIService.displaySnackBar(
-        context: context,
-        message: 'Houve um erro excluir o contato',
-        type: SnackBarType.error,
-      );
-    }, (r) {
-      Navigator.pushNamed(context, Routes.home);
-
-      UIService.displaySnackBar(
-        context: context,
-        message: 'Contato excluído',
-        type: SnackBarType.success,
-      );
-    });
+  @override
+  void initState() {
+    super.initState();
+    _contactController.getContact(widget.id);
   }
 
   onDelete() {
@@ -73,7 +53,7 @@ class _DetailsViewState extends State<DetailsView> {
         ),
         DialogAction(
           label: 'Excluir',
-          onPressed: deleteContact,
+          onPressed: () => _contactController.deleteContact(context),
         ),
       ],
     );
@@ -81,24 +61,20 @@ class _DetailsViewState extends State<DetailsView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getContact(),
-      builder: (context, snapshot) {
-        if (snapshot.data is Contact) {
-          final contact = snapshot.data as Contact;
-
-          return _buildPage(context, contact);
-        } else {
-          return LoadingView();
-        }
-      },
-    );
+    return Observer(builder: (_) {
+      final contact = _contactController.contact;
+      if (contact.id != null) {
+        return _buildPage(context, contact);
+      } else {
+        return LoadingView();
+      }
+    });
   }
 
   Widget _buildPage(BuildContext context, Contact contact) {
     return WillPopScope(
       onWillPop: () async {
-        _controller.search("");
+        _homeController.search("");
         return true;
       },
       child: Scaffold(
@@ -126,7 +102,7 @@ class _DetailsViewState extends State<DetailsView> {
             ContactDetailsActionsRow(
               contact: contact,
               onUpdate: () {
-                setState(() {});
+                _contactController.getContact(contact.id!);
               },
             ),
             SizedBox(
@@ -144,13 +120,13 @@ class _DetailsViewState extends State<DetailsView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Rua do Desenvolvedor, 256",
+                    contact.addressLine1 ?? 'Nenhum endereço cadastrado',
                     style: TextStyle(
                       fontSize: 12,
                     ),
                   ),
                   Text(
-                    "Piracicaba/SP",
+                    contact.addressLine2 ?? '',
                     style: TextStyle(
                       fontSize: 12,
                     ),

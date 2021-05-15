@@ -1,4 +1,3 @@
-import 'package:contacts/domain/entities/contact.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
@@ -6,21 +5,26 @@ import 'package:mapbox_gl/mapbox_gl.dart';
 
 import 'package:contacts/app/android/utils/helpers/mapbox_helpers.dart';
 import 'package:contacts/app/android/utils/services/ui_service.dart';
+import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/data/repositories/address_repository.dart';
+import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/repositories/location_repository.dart';
+import 'package:contacts/domain/entities/contact.dart';
 
 class AddressController {
   final Contact contact;
-  final ValueNotifier<Contact> contactNotifier =
-      ValueNotifier<Contact>(Contact());
-  late MapboxMapController? _mapController;
+  late MapboxMapController _mapController;
 
   final _addressRepository = GetIt.instance.get<AddressRepository>();
+  final _contactController = GetIt.instance.get<ContactController>();
+  final _contactRepository = GetIt.instance.get<ContactRepository>();
   final _locationRepository = GetIt.instance.get<LocationRepository>();
 
-  Symbol? _symbol;
+  late Symbol _symbol;
 
-  AddressController({required this.contact});
+  AddressController({
+    required this.contact,
+  });
 
   Future<dynamic> onSearch(BuildContext context, String address) async {
     final result = await _addressRepository.searchAddress(address);
@@ -30,6 +34,7 @@ class AddressController {
         UIService.displaySnackBar(
           context: context,
           message: 'Houve um erro na pesquisa',
+          type: SnackBarType.alert,
         );
 
         return null;
@@ -39,8 +44,7 @@ class AddressController {
 
         contact.addressLine1 = data['addressLine1'];
         contact.addressLine2 = data['addressLine2'];
-
-        contactNotifier.value = contact;
+        contact.latLng = '${data['lat']},${data['lng']}';
 
         await updateSymbolLocation(latLng);
 
@@ -51,18 +55,47 @@ class AddressController {
     return data;
   }
 
+  Future updateContactAddress(BuildContext context) async {
+    final latLng = await _mapController.getSymbolLatLng(_symbol);
+
+    final result = await _contactRepository.updateAddress(
+      contact.id!,
+      contact.addressLine1!,
+      contact.addressLine2!,
+      "${latLng.latitude},${latLng.longitude}",
+    );
+
+    result.fold(
+      (l) => UIService.displaySnackBar(
+        context: context,
+        message: 'Houve um erro ao salvar o contato',
+        type: SnackBarType.error,
+      ),
+      (id) {
+        _contactController.getContact(contact.id!);
+        Navigator.pop(context);
+      },
+    );
+  }
+
   void onMapCreated(MapboxMapController controller) async {
     _mapController = controller;
-    final latLng = await _getLatLng();
+
+    late LatLng latLng;
+
+    if (this.contact.latLng == null || this.contact.latLng == '') {
+      latLng = await _getLatLng();
+    } else {
+      List<String> location = contact.latLng!.split(',');
+
+      latLng = LatLng(
+        double.parse(location.first),
+        double.parse(location.last),
+      );
+    }
 
     await _addMarker(latLng);
-    // final symbol = await _addMarker(latLng);
-
-    // _locationRepository.onLocationChanged().listen((location) async {
-    //   _onLocationChanged(location, symbol!);
-    // });
-
-    await _mapController!.animateCamera(CameraUpdate.newLatLng(latLng));
+    await _mapController.animateCamera(CameraUpdate.newLatLng(latLng));
   }
 
   Future<LatLng> _getLatLng() async {
@@ -77,13 +110,14 @@ class AddressController {
   Future<Symbol?> _addMarker(LatLng latLng) async {
     final image = await getImageFromAsset('assets/images/marker.png');
 
-    await _mapController!.addImage('asset-marker', image);
+    await _mapController.addImage('asset-marker', image);
 
-    _symbol = await _mapController!.addSymbol(SymbolOptions(
+    _symbol = await _mapController.addSymbol(SymbolOptions(
       iconImage: 'asset-marker',
       geometry: latLng,
       iconSize: 0.25,
       iconAnchor: 'bottom',
+      draggable: true,
     ));
 
     return _symbol;
@@ -95,12 +129,15 @@ class AddressController {
     await updateSymbolLocation(latLng);
   }
 
-  Future<void> updateSymbolLocation(LatLng latLng) async {
-    await _mapController!.updateSymbol(
-      _symbol!,
+  Future<void> updateSymbolLocation(LatLng latLng,
+      {bool animate = true}) async {
+    await _mapController.updateSymbol(
+      _symbol,
       SymbolOptions(geometry: latLng),
     );
 
-    await _mapController!.animateCamera(CameraUpdate.newLatLng(latLng));
+    if (animate) {
+      await _mapController.animateCamera(CameraUpdate.newLatLng(latLng));
+    }
   }
 }
