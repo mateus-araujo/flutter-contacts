@@ -1,10 +1,25 @@
-import 'package:contacts/domain/services/http_service.dart';
 import 'package:dio/dio.dart';
 
-class HttpService implements IHttpService {
-  final Dio _service;
+import 'package:contacts/domain/services/http_service.dart';
 
-  HttpService(this._service);
+class HttpService implements IHttpService {
+  late Dio _service;
+
+  HttpService({
+    String baseUrl = '',
+    String? contentType,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? queryParameters,
+    ResponseType? responseType = ResponseType.json,
+  }) {
+    _service = Dio(BaseOptions(
+      baseUrl: baseUrl,
+      contentType: contentType,
+      headers: headers,
+      queryParameters: queryParameters,
+      responseType: responseType,
+    ));
+  }
 
   @override
   Future<Response> get(

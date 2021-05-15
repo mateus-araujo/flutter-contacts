@@ -1,32 +1,31 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+
 import 'package:contacts/data/services/http_service.dart';
 import 'package:contacts/data/utils/constants.dart';
 import 'package:contacts/domain/errors/errors.dart';
 import 'package:contacts/domain/repositories/address_repository.dart';
-import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 
 class AddressRepository implements IAddressRepository {
-  late Dio _dio;
   late HttpService _service;
 
   String _mapboxAccessToken = Constants.mapboxAccessToken;
 
   AddressRepository() {
-    _dio = Dio(BaseOptions(
+    _service = HttpService(
       baseUrl: 'https://api.mapbox.com/geocoding/v5',
       queryParameters: {
         'access_token': _mapboxAccessToken,
       },
-    ));
-    _service = HttpService(_dio);
+    );
   }
 
   @override
   Future<Either<Failure, dynamic>> searchAddress(String address) async {
     try {
-      Response response = await _service.get("/mapbox.places/$address.json");
+      Response response = await _service.get('/mapbox.places/$address.json');
       dynamic data = jsonDecode(response.data);
 
       List features = data['features'];

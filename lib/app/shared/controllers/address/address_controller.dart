@@ -89,7 +89,7 @@ class AddressController {
     return _symbol;
   }
 
-  Future _onLocationChanged(LocationData location) async {
+  Future onLocationChanged(LocationData location) async {
     final latLng = mapLocationToLatLng(location);
 
     await updateSymbolLocation(latLng);
