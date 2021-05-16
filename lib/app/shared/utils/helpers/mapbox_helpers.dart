@@ -1,11 +1,12 @@
 import 'dart:typed_data';
 
-import 'package:contacts/data/services/http_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/data/services/http_service.dart';
 
 LatLng mapLocationToLatLng(LocationData locationData) {
   return LatLng(locationData.latitude!, locationData.longitude!);
@@ -30,7 +31,7 @@ Future<Uint8List> getImageFromAsset(String path) async {
 }
 
 Future<Uint8List> getImageFromUrl(String url) async {
-  final service = GetIt.instance.get<HttpService>();
+  final service = BindingService.get<HttpService>();
   final response = await service.get(
     url,
     options: Options(responseType: ResponseType.bytes),

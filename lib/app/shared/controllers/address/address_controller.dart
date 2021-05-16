@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-import 'package:contacts/app/android/utils/helpers/mapbox_helpers.dart';
 import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
+import 'package:contacts/app/shared/utils/helpers/mapbox_helpers.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/data/repositories/address_repository.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/repositories/location_repository.dart';
@@ -15,10 +16,10 @@ class AddressController {
   final Contact contact;
   late MapboxMapController _mapController;
 
-  final _addressRepository = GetIt.instance.get<AddressRepository>();
-  final _contactController = GetIt.instance.get<ContactController>();
-  final _contactRepository = GetIt.instance.get<ContactRepository>();
-  final _locationRepository = GetIt.instance.get<LocationRepository>();
+  final _addressRepository = BindingService.get<AddressRepository>();
+  final _contactController = BindingService.get<ContactController>();
+  final _contactRepository = BindingService.get<ContactRepository>();
+  final _locationRepository = BindingService.get<LocationRepository>();
 
   late Symbol _symbol;
 
@@ -73,7 +74,7 @@ class AddressController {
       ),
       (id) {
         _contactController.getContact(contact.id!);
-        Navigator.pop(context);
+        NavigationService.pop();
       },
     );
   }

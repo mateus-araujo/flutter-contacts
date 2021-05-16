@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -22,24 +23,24 @@ class ContactDetailsActionsRow extends StatefulWidget {
 }
 
 class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
-  final _repository = GetIt.instance.get<ContactRepository>();
+  final _repository = BindingService.get<ContactRepository>();
 
   takePicture() async {
-    Navigator.pushNamed(context, Routes.takePicture).then((path) {
-      if (path != null) cropPicture(path);
+    NavigationService.pushNamed(Routes.takePicture).then((path) {
+      print(path);
+      if (path != null) cropPicture(path as List<String?>);
     });
   }
 
-  cropPicture(path) {
-    Navigator.pushNamed(
-      context,
+  cropPicture(List<String?> path) {
+    NavigationService.pushNamed(
       Routes.cropPicture,
       arguments: {'path': path},
-    ).then((path) => updateImage(path));
+    ).then((path) => updateImage(path as List<String?>));
   }
 
-  updateImage(path) async {
-    _repository.updateImage(widget.contact.id!, path).then((_) {
+  updateImage(List<String?> path) async {
+    _repository.updateImage(widget.contact.id!, path[0]!).then((_) {
       widget.onUpdate();
     });
   }

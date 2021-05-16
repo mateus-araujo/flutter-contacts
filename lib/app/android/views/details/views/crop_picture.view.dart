@@ -6,8 +6,10 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+
 class CropPictureView extends StatefulWidget {
-  final String path;
+  final List<String?> path;
 
   const CropPictureView({
     Key? key,
@@ -35,7 +37,7 @@ class _CropPictureViewState extends State<CropPictureView> {
       final path = join(directory.path, fileName);
 
       final croppedImage = await ImageCrop.cropImage(
-        file: File(widget.path),
+        file: File(widget.path[0]!),
         area: area,
       );
 
@@ -62,7 +64,7 @@ class _CropPictureViewState extends State<CropPictureView> {
       body: Crop(
         key: cropKey,
         image: FileImage(
-          File(widget.path),
+          File(widget.path[0]!),
         ),
         aspectRatio: 1 / 1,
       ),
@@ -70,7 +72,7 @@ class _CropPictureViewState extends State<CropPictureView> {
         child: Icon(Icons.save),
         onPressed: () {
           saveImage().then((path) {
-            Navigator.pop(context, path);
+            NavigationService.pop(path);
           });
         },
       ),

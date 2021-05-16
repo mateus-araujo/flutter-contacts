@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/android/views/loading/loading.view.dart';
-import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/app/shared/widgets/contact_details_image.widget.dart';
 import 'package:contacts/domain/entities/contact.dart';
@@ -26,8 +27,8 @@ class DetailsView extends StatefulWidget {
 }
 
 class _DetailsViewState extends State<DetailsView> {
-  final _homeController = GetIt.instance.get<HomeController>();
-  final _contactController = GetIt.instance.get<ContactController>();
+  final _homeController = BindingService.get<HomeController>();
+  final _contactController = BindingService.get<ContactController>();
 
   final circleBorderShape = ElevatedButton.styleFrom(
     shape: CircleBorder(
@@ -49,7 +50,7 @@ class _DetailsViewState extends State<DetailsView> {
       actions: [
         DialogAction(
           label: 'Cancelar',
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => NavigationService.pop(),
         ),
         DialogAction(
           label: 'Excluir',
@@ -136,7 +137,7 @@ class _DetailsViewState extends State<DetailsView> {
               isThreeLine: true,
               trailing: TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.address,
+                  NavigationService.pushNamed(Routes.address,
                       arguments: {'contact': contact});
                 },
                 child: Icon(
@@ -163,8 +164,7 @@ class _DetailsViewState extends State<DetailsView> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
+            NavigationService.pushNamed(
               Routes.contactForm,
               arguments: {'contact': contact},
             );

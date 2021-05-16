@@ -7,18 +7,13 @@ import 'package:contacts/app/android/utils/services/ui_service.dart';
 
 class AuthController {
   final _auth = LocalAuthentication();
-  late final BuildContext _context;
 
-  AuthController({required BuildContext context}) {
-    _context = context;
-  }
-
-  Future<bool> authenticate() async {
+  Future<bool> authenticate(BuildContext context) async {
     final isBiometricAvailable = await _isBiometricAvailable();
 
     if (isBiometricAvailable) {
       await _getListOfBiometrictTypes();
-      return await _authenticateUser();
+      return await _authenticateUser(context);
     }
 
     return false;
@@ -42,7 +37,7 @@ class AuthController {
     }
   }
 
-  Future<bool> _authenticateUser() async {
+  Future<bool> _authenticateUser(BuildContext context) async {
     try {
       bool isAuthenticated = await _auth.authenticate(
         localizedReason: 'Autentique-se para prosseguir',
@@ -54,7 +49,7 @@ class AuthController {
     } on PlatformException catch (e) {
       if (e.code == auth_error.notAvailable) {
         UIService.displaySnackBar(
-            context: _context,
+            context: context,
             message: 'Biometria não disponível neste dispositivo...',
             type: SnackBarType.error);
         return true;

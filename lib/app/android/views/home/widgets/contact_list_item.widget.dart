@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 class ContactListItem extends StatelessWidget {
@@ -29,9 +30,8 @@ class ContactListItem extends StatelessWidget {
       trailing: TextButton(
         onPressed: () {
           if (model.id != null) {
-            Navigator.pushNamed(
-              context,
-              Routes.details,
+            NavigationService.pushNamed(
+              Routes.contact,
               arguments: {'id': model.id},
             );
           }

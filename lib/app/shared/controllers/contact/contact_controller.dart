@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:contacts/app/android/utils/services/ui_service.dart';
-import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -12,7 +13,7 @@ part 'contact_controller.g.dart';
 class ContactController = _ContactController with _$ContactController;
 
 abstract class _ContactController with Store {
-  final _repository = GetIt.instance.get<ContactRepository>();
+  final _repository = BindingService.get<ContactRepository>();
 
   @observable
   Contact contact = Contact();
@@ -37,7 +38,7 @@ abstract class _ContactController with Store {
         type: SnackBarType.error,
       );
     }, (_) {
-      Navigator.pushNamed(context, Routes.home);
+      NavigationService.pushNamed(Routes.home);
 
       UIService.displaySnackBar(
         context: context,

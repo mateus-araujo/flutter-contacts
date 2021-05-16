@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:contacts/app/android/utils/services/ui_service.dart';
-import 'package:contacts/app/navigation/routes.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -22,7 +23,7 @@ class _ContactFormViewState extends State<ContactFormView> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
 
-  final _repository = GetIt.instance.get<ContactRepository>();
+  final _repository = BindingService.get<ContactRepository>();
 
   final validatorName = ValidationBuilder().minLength(3).build();
   final validatorPhone =
@@ -69,7 +70,7 @@ class _ContactFormViewState extends State<ContactFormView> {
       type: SnackBarType.success,
     );
 
-    Navigator.pushNamed(context, Routes.home);
+    NavigationService.pushNamed(Routes.home);
   }
 
   onError() {

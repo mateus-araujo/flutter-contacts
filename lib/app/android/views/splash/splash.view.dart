@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:contacts/app/android/utils/services/ui_service.dart';
-import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/app/shared/controllers/auth/auth_controller.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 
 class SplashView extends StatefulWidget {
   @override
@@ -10,18 +12,14 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  late final AuthController controller;
+  final authController = BindingService.get<AuthController>();
 
   @override
   void initState() {
     super.initState();
-    controller = AuthController(context: context);
-    controller.authenticate().then((isAuthenticated) {
+    authController.authenticate(context).then((isAuthenticated) {
       if (isAuthenticated) {
-        Navigator.pushReplacementNamed(
-          context,
-          Routes.home,
-        );
+        NavigationService.pushNamed(Routes.home);
       } else {
         UIService.displaySnackBar(
             context: context, message: 'Usuário não autenticado');

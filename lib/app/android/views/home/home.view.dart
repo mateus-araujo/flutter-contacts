@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 
 import 'package:contacts/app/android/widgets/empty_message.widget.dart';
 import 'package:contacts/app/android/widgets/loading.widget.dart';
-import 'package:contacts/app/navigation/routes.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_state.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 import 'widgets/contact_list_item.widget.dart';
@@ -18,7 +19,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final _controller = GetIt.instance.get<HomeController>();
+  final _controller = BindingService.get<HomeController>();
 
   @override
   void initState() {
@@ -52,8 +53,7 @@ class _HomeViewState extends State<HomeView> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(
-            context,
+          NavigationService.pushNamed(
             Routes.contactForm,
             arguments: {'contact': Contact(id: 0)},
           );

@@ -1,4 +1,3 @@
-import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:contacts/data/repositories/contact_repository.dart';
@@ -11,6 +10,10 @@ part 'home_controller.g.dart';
 class HomeController = _HomeController with _$HomeController;
 
 abstract class _HomeController with Store {
+  final ContactRepository repository;
+
+  _HomeController(this.repository);
+
   @observable
   HomeState state = HomeState.empty;
 
@@ -28,7 +31,6 @@ abstract class _HomeController with Store {
   @action
   search(String name) async {
     state = HomeState.loading;
-    final repository = GetIt.instance.get<ContactRepository>();
 
     final result = await repository.searchByName(name);
 

@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 
 class TakePictureView extends StatefulWidget {
   @override
@@ -8,7 +10,7 @@ class TakePictureView extends StatefulWidget {
 }
 
 class _TakePictureViewState extends State<TakePictureView> {
-  final _controller = GetIt.instance.get<CameraController>();
+  final _controller = BindingService.get<CameraController>();
 
   Future<String> takePhoto() async {
     try {
@@ -45,7 +47,7 @@ class _TakePictureViewState extends State<TakePictureView> {
         child: Icon(Icons.camera),
         onPressed: () {
           takePhoto().then((path) {
-            Navigator.pop(context, path);
+            NavigationService.pop(path);
           });
         },
       ),
