@@ -13,7 +13,7 @@ class HomeModule extends Module {
   @override
   final List<Bind> binds = [
     AsyncBind<Database>(
-      (i) => SQFLiteDatabase.create(
+      (_) => SQFLiteDatabase.create(
         ContactsDatabase.DATABASE_NAME,
         ContactsDatabase.CREATE_CONTACTS_TABLE_SCRIPT,
       ),

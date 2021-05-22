@@ -6,7 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:form_validator/form_validator.dart';
 
 import 'package:contacts/app/android/android.app.dart';
-import 'package:contacts/app/app_module.dart';
+import 'package:contacts/app/shared/modules/app_module.dart';
 import 'package:contacts/app/ios/ios.app.dart';
 import 'package:contacts/app/shared/utils/validation_locale.dart';
 

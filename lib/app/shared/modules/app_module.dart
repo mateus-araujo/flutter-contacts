@@ -10,7 +10,7 @@ import 'package:contacts/app/shared/modules/navigation/routes.dart';
 class AppModule extends Module {
   @override
   final List<Bind> binds = [
-    AsyncBind<CameraDescription>((i) async {
+    AsyncBind<CameraDescription>((_) async {
       final cameras = await availableCameras();
       final firstCamera = cameras.first;
 

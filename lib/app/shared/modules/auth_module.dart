@@ -6,7 +6,7 @@ import 'package:contacts/app/shared/controllers/auth/auth_controller.dart';
 class AuthModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.singleton((i) => AuthController()),
+    Bind.singleton((_) => AuthController()),
   ];
 
   @override

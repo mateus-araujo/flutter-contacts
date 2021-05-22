@@ -4,7 +4,7 @@ import 'package:contacts/app/android/views/details/views/address.view.dart';
 import 'package:contacts/app/android/views/details/views/crop_picture.view.dart';
 import 'package:contacts/app/android/views/details/views/details.view.dart';
 import 'package:contacts/app/android/views/details/views/take_picture.view.dart';
-import 'package:contacts/app/app_module.dart';
+import 'package:contacts/app/shared/modules/app_module.dart';
 import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/widgets/future_module_loading.dart';
 import 'package:contacts/data/repositories/address_repository.dart';
