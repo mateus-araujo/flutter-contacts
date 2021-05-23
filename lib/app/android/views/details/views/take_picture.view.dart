@@ -1,5 +1,6 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+
+import 'package:camera/camera.dart';
 
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';

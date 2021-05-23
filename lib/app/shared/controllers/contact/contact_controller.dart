@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'package:mobx/mobx.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/shared/modules/navigation/routes.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -31,20 +32,39 @@ abstract class _ContactController with Store {
   deleteContact(BuildContext context) async {
     final result = await _repository.deleteContact(contact.id!);
 
-    result.fold((_) {
-      UIService.displaySnackBar(
+    result.fold((_) async {
+      await UIService.displaySnackBar(
         context: context,
         message: 'Houve um erro excluir o contato',
         type: SnackBarType.error,
       );
-    }, (_) {
-      NavigationService.pushNamed(Routes.home);
-
-      UIService.displaySnackBar(
+    }, (_) async {
+      await UIService.displaySnackBar(
         context: context,
         message: 'Contato excluído',
         type: SnackBarType.success,
       );
+
+      NavigationService.pushNamed(Routes.home);
     });
+  }
+
+  @action
+  onDelete(BuildContext context) {
+    UIService.displayDialog(
+      context: context,
+      title: 'Exclusão de Contato',
+      content: 'Deseja mesmo excluir este contato?',
+      actions: [
+        DialogAction(
+          label: 'Cancelar',
+          onPressed: () => NavigationService.pop(),
+        ),
+        DialogAction(
+          label: 'Excluir',
+          onPressed: () => deleteContact(context),
+        ),
+      ],
+    );
   }
 }

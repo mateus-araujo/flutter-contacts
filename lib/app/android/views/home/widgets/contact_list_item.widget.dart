@@ -7,32 +7,32 @@ import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
 class ContactListItem extends StatelessWidget {
-  final Contact model;
+  final Contact contact;
 
   const ContactListItem({
     Key? key,
-    required this.model,
+    required this.contact,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: model.image == null
+      leading: contact.image == null
           ? CircleAvatar(
               backgroundImage: AssetImage('assets/images/profile-picture.png'))
           : CircleAvatar(
               backgroundImage: FileImage(
-                File(model.image!),
+                File(contact.image!),
               ),
             ),
-      title: Text(model.name!),
-      subtitle: Text(model.phone!),
+      title: Text(contact.name!),
+      subtitle: Text(contact.phone!),
       trailing: TextButton(
         onPressed: () {
-          if (model.id != null) {
+          if (contact.id != null) {
             NavigationService.pushNamed(
               Routes.contact,
-              arguments: {'id': model.id},
+              arguments: {'id': contact.id},
             );
           }
         },

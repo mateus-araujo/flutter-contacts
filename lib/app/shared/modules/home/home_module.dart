@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:contacts/app/android/views/home/home.view.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
-import 'package:contacts/app/shared/widgets/future_module_loading.dart';
+import 'package:contacts/app/shared/modules/home/routes.android.dart';
+import 'package:contacts/app/shared/modules/home/routes.ios.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/databases/sqflite_database.dart';
 import 'package:contacts/device/repositories/sqflite_repository.dart';
@@ -26,10 +28,6 @@ class HomeModule extends Module {
   ];
 
   @override
-  final List<ModularRoute> routes = [
-    ChildRoute(
-      '/',
-      child: (_, args) => FutureModuleLoading<HomeModule>(child: HomeView()),
-    ),
-  ];
+  final List<ModularRoute> routes =
+      Platform.isIOS ? HomeRoutesIOS.routes : HomeRoutesAndroid.routes;
 }

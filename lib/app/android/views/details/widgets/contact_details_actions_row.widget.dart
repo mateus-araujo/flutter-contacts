@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:contacts/app/shared/modules/navigation/routes.dart';
@@ -45,6 +46,9 @@ class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
     });
   }
 
+  void _launchURL(String url) async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+
   @override
   Widget build(BuildContext context) {
     final circleBorderShape = ElevatedButton.styleFrom(
@@ -57,7 +61,7 @@ class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         ElevatedButton(
-          onPressed: () => launch("tel://+55 ${widget.contact.phone}"),
+          onPressed: () => _launchURL("tel://+55 ${widget.contact.phone}"),
           style: circleBorderShape,
           child: Icon(
             Icons.phone,
@@ -65,7 +69,7 @@ class _ContactDetailsActionsRowState extends State<ContactDetailsActionsRow> {
           ),
         ),
         ElevatedButton(
-          onPressed: () => launch("mailto://${widget.contact.email}"),
+          onPressed: () => _launchURL("mailto://${widget.contact.email}"),
           style: circleBorderShape,
           child: Icon(
             Icons.email,

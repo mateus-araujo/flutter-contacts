@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:contacts/app/android/widgets/empty_message.widget.dart';
@@ -9,7 +10,6 @@ import 'package:contacts/app/shared/modules/navigation/routes.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/domain/entities/contact.dart';
-
 import 'widgets/contact_list_item.widget.dart';
 import 'widgets/search_appbar.widget.dart';
 
@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
             return ListView.builder(
               itemCount: _controller.contacts.length,
               itemBuilder: (context, index) => ContactListItem(
-                model: _controller.contacts[index],
+                contact: _controller.contacts[index],
               ),
             );
         }

@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/utils/helpers/mapbox_helpers.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
 import 'package:contacts/data/repositories/address_repository.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/device/repositories/location_repository.dart';
@@ -72,7 +75,12 @@ class AddressController {
         message: 'Houve um erro ao salvar o contato',
         type: SnackBarType.error,
       ),
-      (id) {
+      (id) async {
+        await UIService.displaySnackBar(
+          context: context,
+          message: 'Endereço atualizado',
+        );
+
         _contactController.getContact(contact.id!);
         NavigationService.pop();
       },
@@ -116,7 +124,7 @@ class AddressController {
     _symbol = await _mapController.addSymbol(SymbolOptions(
       iconImage: 'asset-marker',
       geometry: latLng,
-      iconSize: 0.25,
+      iconSize: Platform.isIOS ? 0.1 : 0.25,
       iconAnchor: 'bottom',
       draggable: true,
     ));

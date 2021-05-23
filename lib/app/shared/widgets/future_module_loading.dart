@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:flutter/widgets.dart';
 
 import 'package:contacts/app/android/views/loading/loading.view.dart';
+import 'package:contacts/app/ios/views/loading/loading.view.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 
 class FutureModuleLoading<Module> extends StatelessWidget {
@@ -17,8 +20,10 @@ class FutureModuleLoading<Module> extends StatelessWidget {
 
         if (connectionState == ConnectionState.done) {
           return child;
+        } else if (Platform.isIOS) {
+          return LoadingIOSView();
         } else {
-          return LoadingView();
+          return LoadingAndroidView();
         }
       },
     );

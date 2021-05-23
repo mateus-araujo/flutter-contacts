@@ -2,7 +2,6 @@ import 'package:mobx/mobx.dart';
 
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
-
 import 'home_state.dart';
 
 part 'home_controller.g.dart';

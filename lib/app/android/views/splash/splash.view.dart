@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/shared/controllers/auth/auth_controller.dart';
 import 'package:contacts/app/shared/modules/navigation/routes.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
 
 class SplashView extends StatefulWidget {
   @override

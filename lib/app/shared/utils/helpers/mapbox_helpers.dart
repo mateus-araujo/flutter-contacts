@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+
+import 'package:dio/dio.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 

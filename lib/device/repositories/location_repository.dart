@@ -1,5 +1,6 @@
-import 'package:contacts/domain/repositories/location_repository.dart';
 import 'package:location/location.dart';
+
+import 'package:contacts/domain/repositories/location_repository.dart';
 
 class LocationRepository implements ILocationRepository {
   final Location _location;

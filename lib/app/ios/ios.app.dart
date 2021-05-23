@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
+import 'package:flutter_modular/flutter_modular.dart';
+
 import 'package:contacts/app/ios/styles.dart';
-import 'package:contacts/app/ios/views/home.view.dart';
 
 class IOSApp extends StatelessWidget {
   @override
@@ -10,7 +11,6 @@ class IOSApp extends StatelessWidget {
       title: 'Contacts',
       debugShowCheckedModeBanner: false,
       theme: iosTheme(),
-      home: HomeView(),
-    );
+    ).modular();
   }
 }

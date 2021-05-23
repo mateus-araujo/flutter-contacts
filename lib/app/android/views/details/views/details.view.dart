@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_mobx/flutter_mobx.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
+import 'package:contacts/app/android/views/details/widgets/contact_details_address_info.widget.dart';
 import 'package:contacts/app/android/views/loading/loading.view.dart';
 import 'package:contacts/app/shared/controllers/contact/contact_controller.dart';
 import 'package:contacts/app/shared/controllers/home/home_controller.dart';
@@ -11,7 +12,6 @@ import 'package:contacts/app/shared/utils/services/navigation_service.dart';
 import 'package:contacts/app/shared/widgets/contact_details_description.widget.dart';
 import 'package:contacts/app/shared/widgets/contact_details_image.widget.dart';
 import 'package:contacts/domain/entities/contact.dart';
-
 import '../widgets/contact_details_actions_row.widget.dart';
 
 class DetailsView extends StatefulWidget {
@@ -42,24 +42,6 @@ class _DetailsViewState extends State<DetailsView> {
     _contactController.getContact(widget.id);
   }
 
-  onDelete() {
-    UIService.displayDialog(
-      context: context,
-      title: 'Exclusão de Contato',
-      content: 'Deseja mesmo excluir este contato?',
-      actions: [
-        DialogAction(
-          label: 'Cancelar',
-          onPressed: () => NavigationService.pop(),
-        ),
-        DialogAction(
-          label: 'Excluir',
-          onPressed: () => _contactController.deleteContact(context),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
@@ -67,7 +49,7 @@ class _DetailsViewState extends State<DetailsView> {
       if (contact.id != null) {
         return _buildPage(context, contact);
       } else {
-        return LoadingView();
+        return LoadingAndroidView();
       }
     });
   }
@@ -109,43 +91,7 @@ class _DetailsViewState extends State<DetailsView> {
             SizedBox(
               height: 40,
             ),
-            ListTile(
-              title: Text(
-                "Endereço",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    contact.addressLine1 ?? 'Nenhum endereço cadastrado',
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    contact.addressLine2 ?? '',
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              isThreeLine: true,
-              trailing: TextButton(
-                onPressed: () {
-                  NavigationService.pushNamed(Routes.address,
-                      arguments: {'contact': contact});
-                },
-                child: Icon(
-                  Icons.pin_drop,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-            ),
+            ContactDetailsAddressInfo(contact: contact),
             SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -153,7 +99,7 @@ class _DetailsViewState extends State<DetailsView> {
                 width: double.infinity,
                 height: 50,
                 child: TextButton(
-                  onPressed: onDelete,
+                  onPressed: () => _contactController.onDelete(context),
                   child: Text(
                     "Excluir Contato",
                   ),

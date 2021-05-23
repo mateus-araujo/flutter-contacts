@@ -1,0 +1,65 @@
+import 'package:flutter/cupertino.dart';
+
+import 'package:contacts/app/ios/styles.dart';
+import 'package:contacts/app/shared/controllers/auth/auth_controller.dart';
+import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/services/binding_service.dart';
+import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
+
+class SplashView extends StatefulWidget {
+  @override
+  _SplashViewState createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  final authController = BindingService.get<AuthController>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    authController.authenticate(context).then((isAuthenticated) {
+      if (isAuthenticated) {
+        NavigationService.pushNamed(Routes.home);
+      } else {
+        UIService.displaySnackBar(
+            context: context, message: 'Usuário não autenticado');
+      }
+    }).catchError((_) {
+      UIService.displaySnackBar(
+          context: context, message: 'Erro ao autenticar');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoPageScaffold(
+      backgroundColor: primaryColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity,
+          ),
+          Icon(
+            CupertinoIcons.padlock,
+            size: 72,
+            color: accentColor,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Meus Contatos",
+            style: TextStyle(
+              fontSize: 24,
+              color: accentColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

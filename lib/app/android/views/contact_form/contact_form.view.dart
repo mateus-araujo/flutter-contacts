@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
-import 'package:form_validator/form_validator.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
 import 'package:contacts/app/shared/modules/navigation/routes.dart';
+import 'package:contacts/app/shared/utils/input_formatters.dart';
 import 'package:contacts/app/shared/utils/services/binding_service.dart';
 import 'package:contacts/app/shared/utils/services/navigation_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
+import 'package:contacts/app/shared/utils/validations/contact.dart';
 import 'package:contacts/data/repositories/contact_repository.dart';
 import 'package:contacts/domain/entities/contact.dart';
 
@@ -20,17 +20,12 @@ class ContactFormView extends StatefulWidget {
 }
 
 class _ContactFormViewState extends State<ContactFormView> {
+  final _repository = BindingService.get<ContactRepository>();
+
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = new GlobalKey<FormState>();
 
-  final _repository = BindingService.get<ContactRepository>();
-
-  final validatorName = ValidationBuilder().minLength(3).build();
-  final validatorPhone =
-      ValidationBuilder().minLength(15, 'Telefone inválido').build();
-  final validatorEmail = ValidationBuilder().email().build();
-
-  final phoneInputFormatter = MaskedInputFormatter('(00) 00000-0000');
+  final _validations = ContactValidations.validations;
 
   onSubmit() {
     if (!_formKey.currentState!.validate()) {
@@ -103,18 +98,18 @@ class _ContactFormViewState extends State<ContactFormView> {
                 onChanged: (value) {
                   widget.contact?.name = value;
                 },
-                validator: validatorName,
+                validator: _validations['name'],
                 // initialValue: wi,
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Telefone"),
                 keyboardType: TextInputType.phone,
-                inputFormatters: [phoneInputFormatter],
+                inputFormatters: [InputFormatters.phone],
                 initialValue: widget.contact?.phone,
                 onChanged: (value) {
                   widget.contact?.phone = value;
                 },
-                validator: validatorPhone,
+                validator: _validations['phone'],
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "E-mail"),
@@ -123,7 +118,7 @@ class _ContactFormViewState extends State<ContactFormView> {
                 onChanged: (value) {
                   widget.contact?.email = value;
                 },
-                validator: validatorEmail,
+                validator: _validations['email'],
               ),
               SizedBox(
                 height: 20,

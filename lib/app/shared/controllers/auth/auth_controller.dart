@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 
-import 'package:contacts/app/android/utils/services/ui_service.dart';
+import 'package:contacts/app/shared/utils/services/ui/ui_service.dart';
 
 class AuthController {
   final _auth = LocalAuthentication();
